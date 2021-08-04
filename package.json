@@ -1,0 +1,32 @@
+{
+  "name": "twitter_data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/William10101995/twitter_data.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/William10101995/twitter_data/issues"
+  },
+  "homepage": "https://github.com/William10101995/twitter_data#readme",
+  "dependencies": {
+    "openai-nodejs": "^1.1.0",
+    "twit": "^2.2.11"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.10",
+    "@types/twit": "^2.2.30",
+    "dotenv": "^10.0.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
+  }
+}
