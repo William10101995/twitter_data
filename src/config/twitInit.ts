@@ -1,5 +1,5 @@
 import twit from 'twit'
-import configTwit from './config/configTwit'
+import configTwit from './configTwit'
 
 //Instancio twit
 const twitter = new twit(configTwit)
@@ -11,7 +11,7 @@ twitter.get('account/verify_credentials', {
 	include_email: false
 
 }, (err, data, response) => {
-	console.log(response, data)
+	console.log("Conectado a Twitter...")
 })
 
 export default twitter

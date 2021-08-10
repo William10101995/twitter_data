@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/William10101995/twitter_data#readme",
   "dependencies": {
+    "mongoose": "^5.13.5",
     "openai-nodejs": "^1.1.0",
     "twit": "^2.2.11"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^16.4.10",
     "@types/twit": "^2.2.30",
     "dotenv": "^10.0.0",
