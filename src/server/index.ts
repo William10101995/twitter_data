@@ -3,6 +3,8 @@ import * as db from "../config/connectionDataBase";
 import morgan from "morgan";
 import cors from "cors";
 import Score from "../models/score";
+
+
 //Instancio express
 const app = express();
 
@@ -22,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Ruta get de la api
-app.get("/api/estadisticas", async (req, res) => {
+app.get("/api/estadisticas", async (__ , res) => {
   try {
     const dataScanditade = await Score.find({});
     res.status(200).json(dataScanditade);

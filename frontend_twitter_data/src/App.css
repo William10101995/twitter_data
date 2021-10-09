@@ -1,0 +1,5 @@
+.graphic-content {
+	display: grid;
+	grid-template-columns: auto;
+	text-align: center;
+}
