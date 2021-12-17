@@ -1,85 +1,81 @@
-import React, { Component } from "react";
-import ApexChart from "react-apexcharts";
-import "./App.css"
+import React, { Component, useEffect, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
+import Chart from "react-apexcharts";
+import "./App.css";
 
+export const App = () => {
+  const [candidatos, setCandidatos] = useState([]);
+  useEffect(() => {
+    const socket = io("ws://localhost:5000");
 
-export class App extends Component<any, any> {
-  
-  constructor(props: any) {
-    super(props);
+    socket.on("connnection", () => {
+      console.log("connected to server");
+    });
 
-    this.state = {
-      options: {
-        chart: {
-          type: "bar",
-          height: 350,
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: "55%",
-            endingShape: "rounded",
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ["transparent"],
-        },
-        xaxis: {
-          title:{ text : "( Listas )"},
-          categories: [
-            "Chaco Cambia",
-            "Frente de Todos"
-          ],
-        },
-        yaxis: {
-          title: {
-            text: "( Votos )",
-          },
-        },
-        fill: {
-          opacity: 1,
-        },
-        /* tooltip: {
-          y: {
-            formatter: function (val: any) {
-              return "$ " + val + " thousands";
-            },
-          },
-        }, */
-      },
-      series: [
-        {
-          name: "Score Negativo",
-          data: [4, 6],
-        },
-        {
-          name: "Score Positivo",
-          data: [7, 18],
-        },
-        {
-          name: "Score Neutral",
-          data: [2, 4],
-        },
-      ],
+    socket.on("Newestadisticas", (newEst) => {
+      setCandidatos(newEst);
+      console.log(newEst);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnecting");
+    });
+  }, []);
+
+  useEffect(() => {
+    const getCandidate = async () => {
+      const response = await axios.get(
+        "http://localhost:5000/api/estadisticas"
+      );
+      const candidateData = response.data;
+      setCandidatos(candidateData);
     };
-  }
-  render() {
-    return (
-      <div className = "graphic-content">
-        <h1>Sismógrafo Político</h1>
-        <ApexChart
-          options={this.state.options}
-          series={this.state.series}
-          type="bar"
-          width={'100%'}
-          height={'200%'}
-        />
+
+    getCandidate();
+  }, []);
+  const dataC = candidatos.map((candidato: any) => candidato.candidate);
+  const dataVS = candidatos.map((candidato: any) => candidato.scorePositive);
+  const dataVN = candidatos.map((candidato: any) => candidato.scoreNegative);
+  const dataVNeu = candidatos.map((candidato: any) => candidato.scoreNeutral);
+  const option = {
+    options: {
+      chart: {
+        id: "basic-bar",
+      },
+      xaxis: {
+        categories: dataC,
+      },
+    },
+    series: [
+      {
+        name: "Votos Positivos",
+        data: dataVS,
+      },
+      {
+        name: "Votos Negativos",
+        data: dataVN,
+      },
+      {
+        name: "Votos Neutros",
+        data: dataVNeu,
+      },
+    ],
+  };
+
+  return (
+    <div className="app">
+      <div className="row">
+        <div className="mixed-chart">
+          <Chart
+            options={option.options}
+            series={option.series}
+            type="bar"
+            width={"100%"}
+            height={"380%"}
+          />
+        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
